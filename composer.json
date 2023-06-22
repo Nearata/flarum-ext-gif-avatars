@@ -1,0 +1,51 @@
+{
+    "name": "nearata/flarum-ext-gif-avatars",
+    "description": "Add gif avatars",
+    "keywords": [
+        "flarum"
+    ],
+    "type": "flarum-extension",
+    "license": "Unlicense",
+    "require": {
+        "php": "^8.0",
+        "flarum/core": "^1.8"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.5.0"
+    },
+    "authors": [
+        {
+            "name": "Nearata",
+            "email": "nearata@protonmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nearata\\GifAvatars\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Gif Avatars",
+            "category": "feature",
+            "icon": {
+                "image": "icon.svg",
+                "color": "#fff",
+                "backgroundColor": "#FE654F",
+                "backgroundPosition": "center",
+                "backgroundSize": "34px"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Nearata\\GifAvatars\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "format": "pint src"
+    }
+}
