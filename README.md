@@ -6,6 +6,11 @@
 
 > Add gif avatars
 
+## TODO
+
+- [ ] ImageMagick support
+- [ ] Gifsicle support
+
 ## Install
 
 ```sh
