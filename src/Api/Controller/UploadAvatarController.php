@@ -29,16 +29,19 @@ class UploadAvatarController extends \Flarum\Api\Controller\UploadAvatarControll
     {
         $userId = Arr::get($request->getQueryParams(), 'id');
         $actor = RequestUtil::getActor($request);
-
         $file = Arr::get($request->getUploadedFiles(), 'avatar');
+
+        $user = $this->users->findOrFail($userId);
+
+        if ($actor->id !== $user->id) {
+            $actor->assertCan('edit', $user);
+        }
 
         $this->validator->assertValid(['avatar' => $file]);
 
         if (! $this->isGif($file)) {
             return parent::data($request, $document);
         }
-
-        $user = $this->users->findOrFail($userId);
 
         $this->uploader->uploadGif($user, $file);
 
