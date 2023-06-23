@@ -43,6 +43,10 @@ class UploadAvatarController extends \Flarum\Api\Controller\UploadAvatarControll
             return parent::data($request, $document);
         }
 
+        if ($actor->cannot('nearata-gif-avatars.use-gifs')) {
+            return parent::data($request, $document);
+        }
+
         $this->uploader->uploadGif($user, $file);
 
         $user->save();
