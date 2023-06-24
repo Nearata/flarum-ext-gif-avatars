@@ -8,7 +8,7 @@
 
 ## TODO
 
-- [ ] ImageMagick support
+- [x] ImageMagick support
 - [ ] Gifsicle support
 
 ## Install
