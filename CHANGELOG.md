@@ -8,4 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - feat: permissions to choose which group can use such feature
-- feat: ImageMagick support
+- feat: Gifsicle support

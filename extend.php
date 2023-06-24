@@ -19,7 +19,4 @@ return [
     (new Extend\Routes('api'))
         ->remove('users.avatar.upload')
         ->post('/users/{id}/avatar', 'users.avatar.upload', UploadAvatarController::class),
-
-    (new Extend\Settings)
-        ->default('nearata-gif-avatars.image-optimizer', 'none')
 ];

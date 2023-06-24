@@ -2,8 +2,3 @@ nearata-gif-avatars:
   admin:
     permissions:
       use_gifs: Can use GIFs
-    settings:
-      image_optimizer:
-        label: Image Optimizer
-        none_label: None
-        image_magick_label: Image Magick

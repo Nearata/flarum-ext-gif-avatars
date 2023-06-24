@@ -2,7 +2,6 @@
 
 namespace Nearata\GifAvatars\User;
 
-use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Support\Str;
@@ -14,7 +13,6 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
 {
     public function __construct(
         protected Factory $filesystemFactory,
-        protected SettingsRepositoryInterface $settings,
         protected LoggerInterface $logger)
     {
         parent::__construct($filesystemFactory);
@@ -31,15 +29,14 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
 
         $path = (string) $this->uploadDir->path($avatarPath);
 
-        $this->imageMagick($file, $path);
+        $this->gifsicle($path);
     }
 
-    private function imageMagick(UploadedFile $file, string $path)
+    /**
+     * never used, kept for reference
+     */
+    private function imageMagick(string $path)
     {
-        if ($this->settings->get('nearata-gif-avatars.image-optimizer') !== 'imageMagick') {
-            return;
-        }
-
         $process = Process::fromShellCommandline('magick --version');
         $process->run();
 
@@ -59,6 +56,25 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
         }
 
         $process = Process::fromShellCommandline('magick mogrify -resize "100x100>" '.$path);
+        $process->run();
+
+        if (! $process->isSuccessful()) {
+            $this->log($process);
+
+            return;
+        }
+    }
+
+    private function gifsicle(string $path)
+    {
+        $process = Process::fromShellCommandline('gifsicle --version');
+        $process->run();
+
+        if (! $process->isSuccessful()) {
+            return;
+        }
+
+        $process = Process::fromShellCommandline("gifsicle --resize-fit 100x100 $path -o $path");
         $process->run();
 
         if (! $process->isSuccessful()) {
