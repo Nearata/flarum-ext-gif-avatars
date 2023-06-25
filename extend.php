@@ -3,7 +3,7 @@
 namespace Nearata\GifAvatars;
 
 use Flarum\Extend;
-use Nearata\GifAvatars\Api\Controller\UploadAvatarController;
+use Nearata\GifAvatars\User\UserServiceProvider;
 
 return [
     (new Extend\Frontend('forum'))
@@ -16,7 +16,6 @@ return [
 
     new Extend\Locales(__DIR__.'/locale'),
 
-    (new Extend\Routes('api'))
-        ->remove('users.avatar.upload')
-        ->post('/users/{id}/avatar', 'users.avatar.upload', UploadAvatarController::class),
+    (new Extend\ServiceProvider)
+        ->register(UserServiceProvider::class)
 ];
