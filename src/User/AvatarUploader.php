@@ -20,7 +20,7 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
 
     public function upload(User $user, Image $image)
     {
-        if ($image->mime() !== 'image/gif') {
+        if ($image->mime() !== 'image/gif' || $user->cannot('nearata-gif-avatars.use-gifs')) {
             parent::upload($user, $image);
 
             return;

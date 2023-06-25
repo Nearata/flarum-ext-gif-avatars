@@ -34,7 +34,7 @@
                 "color": "#fff",
                 "backgroundColor": "#FE654F",
                 "backgroundPosition": "center",
-                "backgroundSize": "34px"
+                "backgroundRepeat": "no-repeat"
             }
         }
     },
