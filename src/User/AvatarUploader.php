@@ -26,20 +26,19 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
             return;
         }
 
-        $from = $image->basePath();
-        $to = str_replace($image->extension, 'gif', $from);
+        $path = $image->basePath();
 
-        $this->gifsicle($from, $to);
+        $this->gifsicle($path, $path);
 
         $avatarPath = Str::random().'.gif';
 
         $this->removeFileAfterSave($user);
         $user->changeAvatarPath($avatarPath);
 
-        $this->uploadDir->put($avatarPath, @file_get_contents($to));
+        $this->uploadDir->put($avatarPath, @file_get_contents($path));
     }
 
-    private function gifsicle(string $from, string $to)
+    private function gifsicle(string $path)
     {
         $process = Process::fromShellCommandline('gifsicle --version');
         $process->run();
@@ -48,7 +47,7 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
             return;
         }
 
-        $process = Process::fromShellCommandline("gifsicle --resize-fit 100x100 $from -o $to");
+        $process = Process::fromShellCommandline("gifsicle --resize-fit 100x100 $path -o $path");
         $process->run();
 
         if (! $process->isSuccessful()) {
