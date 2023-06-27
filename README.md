@@ -6,6 +6,12 @@
 
 > Add gif avatars
 
+## How to use
+
+If a gif is uploaded, and you have permission to use them, will play automatically.
+
+If [gifsicle](https://github.com/kohler/gifsicle) is available globally, than the gifs will be resized to 100x100 pixels.
+
 ## Install
 
 ```sh
