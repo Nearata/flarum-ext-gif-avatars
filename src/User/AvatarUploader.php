@@ -47,8 +47,11 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
             return;
         }
 
-        $process = Process::fromShellCommandline("gifsicle --resize-fit 100x100 $path -o $path");
-        $process->run();
+        $process = Process::fromShellCommandline('gifsicle --resize-fit 100x100 "${:path1}" -o "${:path2}"');
+        $process->run(null, [
+            'path1' => $path,
+            'path2' => $path
+        ]);
 
         if (! $process->isSuccessful()) {
             $this->logger->warning('[nearata/flarum-ext-gif-avatars] :: '.$process->getErrorOutput());
