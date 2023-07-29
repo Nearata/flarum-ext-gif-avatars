@@ -28,7 +28,7 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
 
         $path = $image->basePath();
 
-        $this->gifsicle($path, $path);
+        $this->imagickResize($path, $path);
 
         $avatarPath = Str::random().'.gif';
 
@@ -38,25 +38,31 @@ class AvatarUploader extends \Flarum\User\AvatarUploader
         $this->uploadDir->put($avatarPath, @file_get_contents($path));
     }
 
-    private function gifsicle(string $path)
+    private function imagickResize(string $path)
     {
-        $process = Process::fromShellCommandline('gifsicle --version');
-        $process->run();
+        try {
+            // Create new Imagick object
+            $imagick = new \Imagick($path);
 
-        if (! $process->isSuccessful()) {
-            return;
-        }
+            // Coalesce the gif to ensure correct colors across frames
+            $imagick = $imagick->coalesceImages();
 
-        $process = Process::fromShellCommandline('gifsicle --resize-fit 100x100 "${:path1}" -o "${:path2}"');
-        $process->run(null, [
-            'path1' => $path,
-            'path2' => $path
-        ]);
+            // Resize all frames
+            foreach($imagick as $frame){
+                // resize image in each frame
+                $frame->thumbnailImage(100, 100, true, true);
+                
+                // Set the page of the frame to ensure the size and offsets are correct
+                $frame->setImagePage(100, 100, 0, 0);
+            }
 
-        if (! $process->isSuccessful()) {
-            $this->logger->warning('[nearata/flarum-ext-gif-avatars] :: '.$process->getErrorOutput());
+            // Optimize the gif for space
+            $imagick = $imagick->optimizeImageLayers();
 
-            return;
+            // Write all frames to disk
+            $imagick->writeImages($path, true);
+        } catch (\ImagickException $e) {
+            $this->logger->warning('[nearata/flarum-ext-gif-avatars] :: ' . $e->getMessage());
         }
     }
 }
